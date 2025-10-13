@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coffee Shop Data Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Process Flow Diagram */
+        .process-flow {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .process-flow h2 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .flow-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .flow-step {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .flow-step:hover {
+            transform: scale(1.05);
+        }
+
+        .flow-step .number {
+            background: white;
+            color: #667eea;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 0 auto 15px;
+        }
+
+        .flow-arrow {
+            font-size: 40px;
+            color: #cbd5e0;
+        }
+
+        /* Stage Cards */
+        .stage {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .stage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e2e8f0;
+        }
+
+        .stage-icon {
+            font-size: 60px;
+            margin-right: 20px;
+        }
+
+        .stage-title h2 {
+            font-size: 2.2em;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .stage-title .subtitle {
+            color: #718096;
+            font-size: 1.2em;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Story Section */
+        .story-box {
+            background: #f7fafc;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+
+        .story-box h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .story-box p, .story-box ul {
+            line-height: 1.8;
+            color: #4a5568;
+        }
+
+        .story-box ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        /* Diagram Boxes */
+        .diagram-box {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .diagram-box h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+
+        /* Coffee Shop Image Placeholder with SVG */
+        .image-placeholder {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Data Flow Diagram */
+        .data-flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .data-node {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 120px;
+            text-align: center;
+            border: 2px solid #667eea;
+        }
+
+        .data-node .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .data-node .label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        /* Chart SVG */
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Before/After Comparison */
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-box {
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .comparison-box.before {
+            background: #fee;
+            border: 2px solid #f56565;
+        }
+
+        .comparison-box.after {
+            background: #efe;
+            border: 2px solid #48bb78;
+        }
+
+        .comparison-box h4 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        /* Impact Metrics */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .metric-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .metric-card .label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        /* Why Matters Box */
+        .why-matters {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 1.1em;
+        }
+
+        /* Mermaid Style Flowchart */
+        .flowchart {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .flowchart-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flowchart-box {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 10px;
+            padding: 20px 30px;
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .flowchart-diamond {
+            background: white;
+            border: 3px solid #f5576c;
+            padding: 20px;
+            font-weight: 600;
+            color: #2d3748;
+            min-width: 150px;
+            text-align: center;
+            transform: rotate(45deg);
+            position: relative;
+        }
+
+        .flowchart-diamond .text {
+            transform: rotate(-45deg);
+            display: block;
+        }
+
+        .flowchart-arrow {
+            font-size: 30px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        /* Table Styling */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .data-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .data-table tr:hover {
+            background: #f7fafc;
+        }
+
+        .error {
+            color: #f56565;
+            text-decoration: line-through;
+        }
+
+        .corrected {
+            color: #48bb78;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ The Coffee Shop Data Journey</h1>
+            <p style="font-size: 1.3em; opacity: 0.9;">From Problem to Profit: A Complete Visual Guide</p>
+        </div>
+
+        <!-- Overall Process Flow -->
+        <div class="process-flow">
+            <h2>📊 The Complete Data Analytics Process</h2>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="number">1</div>
+                    <strong>Business Understanding</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Define Problem</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">2</div>
+                    <strong>Data Collection</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Gather Info</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">3</div>
+                    <strong>Data Cleaning</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Fix Errors</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">4</div>
+                    <strong>Analysis</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Find Patterns</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">5</div>
+                    <strong>Modeling</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Predict Future</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">6</div>
+                    <strong>Visualization</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Create Dashboards</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="number">7</div>
+                    <strong>Deployment</strong>
+                    <div style="font-size: 0.9em; margin-top: 10px;">Take Action</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 1: Business Understanding -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">🎯</div>
+                <div class="stage-title">
+                    <h2>1. Business Understanding</h2>
+                    <div class="subtitle">Define the Problem</div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="story-box">
+                    <h3>📖 The Story</h3>
+                    <p><strong>Meet Sarah</strong>, owner of "Brew Haven" coffee shop. She notices:</p>
+                    <ul>
+                        <li>📉 Sales dropped 15% in 3 months</li>
+                        <li>🤔 Foot traffic seems normal</li>
+                        <li>❓ What's causing the decline?</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Key Questions:</strong></p>
+                    <ul>
+                        <li>Is it pricing?</li>
+                        <li>New competition?</li>
+                        <li>Customer preferences changing?</li>
+                        <li>Specific time periods affected?</li>
+                    </ul>
+                </div>
+
+                <div class="diagram-box">
+                    <h3>Problem Definition Framework</h3>
+                    <svg width="100%" height="300" viewBox="0 0 400 300">
+                        <!-- Center Problem -->
+                        <circle cx="200" cy="150" r="60" fill="#667eea" opacity="0.2" stroke="#667eea" stroke-width="3"/>
+                        <text x="200" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#2d3748">PROBLEM</text>
+                        <text x="200" y="165" text-anchor="middle" font-size="12" fill="#2d3748">Sales Down</text>
+                        
+                        <!-- Why -->
+                        <circle cx="100" cy="80" r="40" fill="#f5576c" opacity="0.2" stroke="#f5576c" stroke-width="2"/>
+                        <text x="100" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">WHY?</text>
+                        <text x="100" y="90" text-anchor="middle" font-size="10" fill="#2d3748">Root Cause</text>
+                        <line x1="140" y1="100" x2="170" y2="125" stroke="#cbd5e0" stroke-width="2"/>
+                        
+                        <!-- What -->
+                        <circle cx="300" cy="80" r="40" fill="#43e97b" opacity="0.2" stroke="#43e97b" stroke-width="2"/>
+                        <text x="300" y="75" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">WHAT?</text>
+                        <text x="300" y="90" text-anchor="middle" font-size="10" fill="#2d3748">Specifics</text>
+                        <line x1="260" y1="100" x2="230" y2="125" stroke="#cbd5e0" stroke-width="2"/>
+                        
+                        <!-- When -->
+                        <circle cx="100" cy="220" r="40" fill="#ffd93d" opacity="0.2" stroke="#ffd93d" stroke-width="2"/>
+                        <text x="100" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">WHEN?</text>
+                        <text x="100" y="230" text-anchor="middle" font-size="10" fill="#2d3748">Timeline</text>
+                        <line x1="140" y1="200" x2="170" y2="175" stroke="#cbd5e0" stroke-width="2"/>
+                        
+                        <!-- Where -->
+                        <circle cx="300" cy="220" r="40" fill="#4facfe" opacity="0.2" stroke="#4facfe" stroke-width="2"/>
+                        <text x="300" y="215" text-anchor="middle" font-size="12" font-weight="bold" fill="#2d3748">WHERE?</text>
+                        <text x="300" y="230" text-anchor="middle" font-size="10" fill="#2d3748">Location</text>
+                        <line x1="260" y1="200" x2="230" y2="175" stroke="#cbd5e0" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> Clear problem definition saves time and money! Without knowing exactly what to solve, Sarah might waste resources on wrong solutions.
+            </div>
+        </div>
+
+        <!-- Stage 2: Data Collection -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">📊</div>
+                <div class="stage-title">
+                    <h2>2. Data Collection</h2>
+                    <div class="subtitle">Gather All Relevant Data</div>
+                </div>
+            </div>
+
+            <div class="story-box" style="margin-bottom: 30px;">
+                <h3>📖 The Story</h3>
+                <p>Sarah decides to collect comprehensive data from multiple sources to understand her business better.</p>
+            </div>
+
+            <div class="data-flow-diagram">
+                <div class="data-node">
+                    <div class="icon">💳</div>
+                    <div class="label">Sales Data</div>
+                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">POS System</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="data-node">
+                    <div class="icon">🌤️</div>
+                    <div class="label">Weather</div>
+                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">API Data</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="data-node">
+                    <div class="icon">👥</div>
+                    <div class="label">Customers</div>
+                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">Surveys</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="data-node">
+                    <div class="icon">🚶</div>
+                    <div class="label">Foot Traffic</div>
+                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">Counter</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="data-node">
+                    <div class="icon">🗄️</div>
+                    <div class="label">Database</div>
+                    <div style="font-size: 0.9em; color: #718096; margin-top: 5px;">Centralized</div>
+                </div>
+            </div>
+
+            <div class="diagram-box" style="margin-top: 30px;">
+                <h3>Sample Data Collected</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Revenue</th>
+                            <th>Weather</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-01-15</td>
+                            <td>08:30</td>
+                            <td>Latte</td>
+                            <td>12</td>
+                            <td>$60</td>
+                            <td>☀️ Sunny</td>
+                        </tr>
+                        <tr>
+                            <td>2025-01-15</td>
+                            <td>14:30</td>
+                            <td>Iced Coffee</td>
+                            <td>5</td>
+                            <td>$22.50</td>
+                            <td>☀️ Sunny</td>
+                        </tr>
+                        <tr>
+                            <td>2025-01-16</td>
+                            <td>09:00</td>
+                            <td>Cappuccino</td>
+                            <td>8</td>
+                            <td>$40</td>
+                            <td>🌧️ Rainy</td>
+                        </tr>
+                        <tr>
+                            <td>2025-01-16</td>
+                            <td>15:00</td>
+                            <td>Latte</td>
+                            <td>3</td>
+                            <td>$15</td>
+                            <td>🌧️ Rainy</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> No data = No insights! Quality data from multiple sources gives a complete picture of the business.
+            </div>
+        </div>
+
+        <!-- Stage 3: Data Cleaning -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">🧹</div>
+                <div class="stage-title">
+                    <h2>3. Data Cleaning</h2>
+                    <div class="subtitle">Fix Errors and Inconsistencies</div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="story-box">
+                    <h3>📖 The Story</h3>
+                    <p>Sarah discovers her data has problems:</p>
+                    <ul>
+                        <li>🔴 Duplicate transactions</li>
+                        <li>🔴 Missing values</li>
+                        <li>🔴 Spelling inconsistencies</li>
+                        <li>🔴 Invalid data (negative prices)</li>
+                        <li>🔴 Wrong data types</li>
+                    </ul>
+                    <p style="margin-top: 15px;">She spends time cleaning to ensure accuracy.</p>
+                </div>
+
+                <div class="flowchart">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Data Cleaning Process</h3>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box">Raw Data</div>
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box">Remove Duplicates</div>
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box">Handle Missing Values</div>
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box">Standardize Format</div>
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box">Validate Data</div>
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="border-color: #48bb78; background: #efe;">Clean Data ✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison">
+                <div class="comparison-box before">
+                    <h4>❌ Before Cleaning</h4>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <div class="error">Cofee - $5.00</div>
+                        <div class="error">Coffee - $5.00 (duplicate)</div>
+                        <div class="error">Coffe - $-3.00</div>
+                        <div class="error">NULL - $5.00</div>
+                        <div class="error">Cappucino - $4.50</div>
+                    </div>
+                </div>
+                <div class="comparison-box after">
+                    <h4>✅ After Cleaning</h4>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <div class="corrected">Coffee - $5.00</div>
+                        <div class="corrected">Coffee - $5.00</div>
+                        <div class="corrected">Coffee - $5.00</div>
+                        <div class="corrected">Cappuccino - $4.50</div>
+                        <div style="color: #4a5568; margin-top: 10px; font-size: 0.9em;">✓ 2 duplicates removed<br>✓ 1 error corrected<br>✓ 1 null handled<br>✓ Spelling standardized</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> Garbage In = Garbage Out! Clean data ensures accurate analysis and trustworthy insights.
+            </div>
+        </div>
+
+        <!-- Stage 4: Analysis -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">🔍</div>
+                <div class="stage-title">
+                    <h2>4. Analysis</h2>
+                    <div class="subtitle">Discover Patterns and Insights</div>
+                </div>
+            </div>
+
+            <div class="story-box" style="margin-bottom: 30px;">
+                <h3>📖 The Story</h3>
+                <p>Sarah analyzes the clean data and discovers key patterns that explain the sales decline!</p>
+            </div>
+
+            <div class="two-column">
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 15px;">Sales by Hour of Day</h3>
+                    <svg width="100%" height="250" viewBox="0 0 400 250">
+                        <!-- Grid lines -->
+                        <line x1="50" y1="200" x2="370" y2="200" stroke="#e2e8f0" stroke-width="2"/>
+                        <line x1="50" y1="150" x2="370" y2="150" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5"/>
+                        <line x1="50" y1="100" x2="370" y2="100" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5"/>
+                        <line x1="50" y1="50" x2="370" y2="50" stroke="#e2e8f0" stroke-width="1" stroke-dasharray="5,5"/>
+                        
+                        <!-- Bars -->
+                        <rect x="70" y="80" width="35" height="120" fill="#667eea" opacity="0.8"/>
+                        <rect x="125" y="90" width="35" height="110" fill="#667eea" opacity="0.8"/>
+                        <rect x="180" y="130" width="35" height="70" fill="#f5576c" opacity="0.8"/>
+                        <rect x="235" y="150" width="35" height="50" fill="#f5576c" opacity="0.8"/>
+                        <rect x="290" y="120" width="35" height="80" fill="#667eea" opacity="0.8"/>
+                        
+                        <!-- Labels -->
+                        <text x="87" y="220" text-anchor="middle" font-size="12">7-9am</text>
+                        <text x="142" y="220" text-anchor="middle" font-size="12">9-12pm</text>
+                        <text x="197" y="220" text-anchor="middle" font-size="12">12-2pm</text>
+                        <text x="252" y="220" text-anchor="middle" font-size="12" fill="#f5576c" font-weight="bold">2-5pm</text>
+                        <text x="307" y="220" text-anchor="middle" font-size="12">5-8pm</text>
+                        
+                        <!-- Y-axis labels -->
+                        <text x="45" y="55" text-anchor="end" font-size="11">High</text>
+                        <text x="45" y="155" text-anchor="end" font-size="11">Med</text>
+                        <text x="45" y="205" text-anchor="end" font-size="11">Low</text>
+                        
+                        <!-- Highlight annotation -->
+                        <text x="252" y="140" text-anchor="middle" font-size="13" fill="#f5576c" font-weight="bold">↓ 40% DROP!</text>
+                    </svg>
+                </div>
+
+                <div class="diagram-box">
+                    <h3>Key Findings</h3>
+                    <div style="text-align: left; padding: 20px;">
+                        <div style="margin: 15px 0; padding: 15px; background: #e6fffa; border-left: 4px solid #48bb78; border-radius: 5px;">
+                            <strong>✅ Morning (7-10am):</strong><br>
+                            Lattes sell 3x more<br>
+                            Revenue: $850/day
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: #fff5f5; border-left: 4px solid #f5576c; border-radius: 5px;">
+                            <strong>❌ Afternoon (2-5pm):</strong><br>
+                            Sales dropped 40%<br>
+                            Revenue: $280/day
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: #eff6ff; border-left: 4px solid #4facfe; border-radius: 5px;">
+                            <strong>🌧️ Weather Impact:</strong><br>
+                            Cold drinks ↓ 40% on rainy days
+                        </div>
+                        <div style="margin: 15px 0; padding: 15px; background: #fef5e7; border-left: 4px solid #ffd93d; border-radius: 5px;">
+                            <strong>🎯 Root Cause Found:</strong><br>
+                            New office building has coffee cart during afternoon!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> Analysis reveals the truth! Sarah now knows exactly WHEN and WHY sales are dropping - afternoon competition is the culprit.
+            </div>
+        </div>
+
+        <!-- Stage 5: Modeling -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">🤖</div>
+                <div class="stage-title">
+                    <h2>5. Modeling</h2>
+                    <div class="subtitle">Build Predictive Models</div>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="story-box">
+                    <h3>📖 The Story</h3>
+                    <p>Sarah builds a machine learning model to predict daily sales based on:</p>
+                    <ul>
+                        <li>📅 Day of week</li>
+                        <li>🌤️ Weather conditions</li>
+                        <li>🎉 Special events</li>
+                        <li>⏰ Time of day</li>
+                        <li>📊 Historical patterns</li>
+                    </ul>
+                    <p style="margin-top: 15px;">The model learns from past data and can now predict future sales with 85% accuracy!</p>
+                </div>
+
+                <div class="flowchart">
+                    <h3 style="text-align: center; margin-bottom: 20px;">Prediction Model Flow</h3>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="background: #e6fffa;">Historical Data<br>(1 year)</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="background: #fff5f5;">Train Model<br>(Learn Patterns)</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="background: #fef5e7;">Test Model<br>(Validate Accuracy)</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="background: #eff6ff;">New Inputs<br>(Weather, Day, etc.)</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-arrow">↓</div>
+                    </div>
+                    <div class="flowchart-row">
+                        <div class="flowchart-box" style="border-color: #48bb78; border-width: 3px; background: #e6fffa;">Prediction<br>Tomorrow: 850 cups ☕</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="diagram-box" style="margin-top: 30px;">
+                <h3>Prediction Example</h3>
+                <svg width="100%" height="200" viewBox="0 0 500 200">
+                    <!-- Input Box -->
+                    <rect x="20" y="30" width="150" height="140" fill="#eff6ff" stroke="#4facfe" stroke-width="2" rx="10"/>
+                    <text x="95" y="55" text-anchor="middle" font-weight="bold" fill="#2d3748">Inputs</text>
+                    <text x="95" y="80" text-anchor="middle" font-size="13">📅 Tuesday</text>
+                    <text x="95" y="105" text-anchor="middle" font-size="13">🌤️ Sunny</text>
+                    <text x="95" y="130" text-anchor="middle" font-size="13">🌡️ 22°C</text>
+                    <text x="95" y="155" text-anchor="middle" font-size="13">⏰ Morning</text>
+                    
+                    <!-- Arrow -->
+                    <path d="M 180 100 L 220 100" stroke="#667eea" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+                        </marker>
+                    </defs>
+                    
+                    <!-- Model Box -->
+                    <rect x="230" y="50" width="120" height="100" fill="#f5f3ff" stroke="#667eea" stroke-width="2" rx="10"/>
+                    <text x="290" y="75" text-anchor="middle" font-weight="bold" fill="#2d3748">🤖 Model</text>
+                    <text x="290" y="100" text-anchor="middle" font-size="12">Processing...</text>
+                    <text x="290" y="125" text-anchor="middle" font-size="12">Analyzing</text>
+                    
+                    <!-- Arrow -->
+                    <path d="M 360 100 L 400 100" stroke="#667eea" stroke-width="3" fill="none" marker-end="url(#arrowhead2)"/>
+                    <defs>
+                        <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#667eea" />
+                        </marker>
+                    </defs>
+                    
+                    <!-- Output Box -->
+                    <rect x="410" y="40" width="70" height="120" fill="#e6fffa" stroke="#48bb78" stroke-width="3" rx="10"/>
+                    <text x="445" y="65" text-anchor="middle" font-weight="bold" fill="#2d3748">Output</text>
+                    <text x="445" y="95" text-anchor="middle" font-size="24" font-weight="bold" fill="#48bb78">850</text>
+                    <text x="445" y="120" text-anchor="middle" font-size="13">cups</text>
+                    <text x="445" y="145" text-anchor="middle" font-size="11" fill="#718096">85% confident</text>
+                </svg>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> Predictions enable smart planning! Sarah can now order the right inventory, schedule staff efficiently, and avoid waste.
+            </div>
+        </div>
+
+        <!-- Stage 6: Visualization -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">📈</div>
+                <div class="stage-title">
+                    <h2>6. Visualization</h2>
+                    <div class="subtitle">Create Dashboards & Reports</div>
+                </div>
+            </div>
+
+            <div class="story-box" style="margin-bottom: 30px;">
+                <h3>📖 The Story</h3>
+                <p>Sarah creates an interactive dashboard that she can check from her phone. One glance tells her everything about her business!</p>
+            </div>
+
+            <div class="diagram-box">
+                <h3>📱 Real-Time Dashboard</h3>
+                <div style="background: #1a202c; padding: 30px; border-radius: 12px; color: white; margin-top: 20px;">
+                    <!-- Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                        <h2 style="margin: 0; color: white;">☕ Brew Haven Dashboard</h2>
+                        <div style="background: #48bb78; padding: 8px 15px; border-radius: 20px; font-size: 0.9em;">🟢 Live</div>
+                    </div>
+                    
+                    <!-- KPI Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px;">
+                            <div style="font-size: 0.9em; opacity: 0.9;">Today's Revenue</div>
+                            <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">$1,240</div>
+                            <div style="font-size: 0.85em;">↑ 12% vs yesterday</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; border-radius: 10px;">
+                            <div style="font-size: 0.9em; opacity: 0.9;">Customers</div>
+                            <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">156</div>
+                            <div style="font-size: 0.85em;">↑ 8% vs yesterday</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; border-radius: 10px;">
+                            <div style="font-size: 0.9em; opacity: 0.9;">Avg Order</div>
+                            <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">$7.95</div>
+                            <div style="font-size: 0.85em;">→ Same as avg</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); padding: 20px; border-radius: 10px;">
+                            <div style="font-size: 0.9em; opacity: 0.9;">Top Item</div>
+                            <div style="font-size: 2em; font-weight: bold; margin: 10px 0;">☕ Latte</div>
+                            <div style="font-size: 0.85em;">89 sold today</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Area -->
+                    <div style="background: #2d3748; padding: 20px; border-radius: 10px;">
+                        <h3 style="margin: 0 0 15px 0; color: white;">Sales Trend (Last 7 Days)</h3>
+                        <svg width="100%" height="150" viewBox="0 0 600 150">
+                            <polyline points="50,100 100,90 150,85 200,95 250,80 300,70 350,60" 
+                                      fill="none" stroke="#48bb78" stroke-width="3"/>
+                            <circle cx="50" cy="100" r="5" fill="#48bb78"/>
+                            <circle cx="100" cy="90" r="5" fill="#48bb78"/>
+                            <circle cx="150" cy="85" r="5" fill="#48bb78"/>
+                            <circle cx="200" cy="95" r="5" fill="#48bb78"/>
+                            <circle cx="250" cy="80" r="5" fill="#48bb78"/>
+                            <circle cx="300" cy="70" r="5" fill="#48bb78"/>
+                            <circle cx="350" cy="60" r="7" fill="#ffd93d"/>
+                            
+                            <text x="50" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Mon</text>
+                            <text x="100" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Tue</text>
+                            <text x="150" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Wed</text>
+                            <text x="200" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Thu</text>
+                            <text x="250" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Fri</text>
+                            <text x="300" y="130" text-anchor="middle" font-size="11" fill="#a0aec0">Sat</text>
+                            <text x="350" y="130" text-anchor="middle" font-size="11" fill="#ffd93d" font-weight="bold">Today</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-column" style="margin-top: 30px;">
+                <div class="diagram-box">
+                    <h3>Product Performance</h3>
+                    <svg width="100%" height="200" viewBox="0 0 200 200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#e2e8f0" stroke-width="40"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#667eea" stroke-width="40"
+                                stroke-dasharray="180 320" transform="rotate(-90 100 100)"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#f5576c" stroke-width="40"
+                                stroke-dasharray="100 400" stroke-dashoffset="-180" transform="rotate(-90 100 100)"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#43e97b" stroke-width="40"
+                                stroke-dasharray="70 430" stroke-dashoffset="-280" transform="rotate(-90 100 100)"/>
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="#ffd93d" stroke-width="40"
+                                stroke-dasharray="50 450" stroke-dashoffset="-350" transform="rotate(-90 100 100)"/>
+                        
+                        <text x="100" y="105" text-anchor="middle" font-size="24" font-weight="bold" fill="#2d3748">Sales</text>
+                        <text x="100" y="125" text-anchor="middle" font-size="14" fill="#718096">Mix</text>
+                    </svg>
+                    <div style="margin-top: 15px; text-align: left;">
+                        <div><span style="color: #667eea;">●</span> Lattes (36%)</div>
+                        <div><span style="color: #f5576c;">●</span> Cappuccino (20%)</div>
+                        <div><span style="color: #43e97b;">●</span> Iced Coffee (14%)</div>
+                        <div><span style="color: #ffd93d;">●</span> Other (30%)</div>
+                    </div>
+                </div>
+
+                <div class="diagram-box">
+                    <h3>Hourly Heatmap</h3>
+                    <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-top: 15px;">
+                        <div style="background: #48bb78; height: 30px; border-radius: 5px;" title="7am"></div>
+                        <div style="background: #48bb78; height: 30px; border-radius: 5px;" title="8am"></div>
+                        <div style="background: #43e97b; height: 30px; border-radius: 5px;" title="9am"></div>
+                        <div style="background: #38f9d7; height: 30px; border-radius: 5px;" title="10am"></div>
+                        <div style="background: #38f9d7; height: 30px; border-radius: 5px;" title="11am"></div>
+                        <div style="background: #4facfe; height: 30px; border-radius: 5px;" title="12pm"></div>
+                        <div style="background: #ffd93d; height: 30px; border-radius: 5px;" title="1pm"></div>
+                        <div style="background: #f5576c; height: 30px; border-radius: 5px;" title="2pm"></div>
+                        <div style="background: #f5576c; height: 30px; border-radius: 5px;" title="3pm"></div>
+                        <div style="background: #f5576c; height: 30px; border-radius: 5px;" title="4pm"></div>
+                        <div style="background: #ffd93d; height: 30px; border-radius: 5px;" title="5pm"></div>
+                        <div style="background: #4facfe; height: 30px; border-radius: 5px;" title="6pm"></div>
+                        <div style="background: #4facfe; height: 30px; border-radius: 5px;" title="7pm"></div>
+                        <div style="background: #38f9d7; height: 30px; border-radius: 5px;" title="8pm"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 0.85em; color: #718096;">
+                        <span>Low</span>
+                        <span>Medium</span>
+                        <span>High</span>
+                    </div>
+                    <div style="margin-top: 15px; font-size: 0.9em; color: #4a5568;">
+                        <strong>Peak Hours:</strong> 7-9am 🟢<br>
+                        <strong>Low Period:</strong> 2-5pm 🔴
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> Visualizations make data instantly understandable! Complex patterns become obvious at a glance, enabling faster decisions.
+            </div>
+        </div>
+
+        <!-- Stage 7: Deployment -->
+        <div class="stage">
+            <div class="stage-header">
+                <div class="stage-icon">🚀</div>
+                <div class="stage-title">
+                    <h2>7. Deployment</h2>
+                    <div class="subtitle">Turn Insights Into Action</div>
+                </div>
+            </div>
+
+            <div class="story-box" style="margin-bottom: 30px;">
+                <h3>📖 The Story - Taking Action!</h3>
+                <p>Armed with data-driven insights, Sarah implements strategic changes to her business operations.</p>
+            </div>
+
+            <div class="flowchart">
+                <h3 style="text-align: center; margin-bottom: 20px;">Action Plan Implementation</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #667eea;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">🎉 Afternoon Happy Hour</h4>
+                        <p style="font-size: 0.95em; color: #4a5568;">20% off all drinks from 2-5 PM</p>
+                        <div style="background: #eff6ff; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em;">
+                            <strong>Result:</strong> +35% afternoon traffic
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #f5576c;">
+                        <h4 style="color: #f5576c; margin-bottom: 10px;">👨‍🍳 Smart Staffing</h4>
+                        <p style="font-size: 0.95em; color: #4a5568;">More staff in morning, optimized afternoon</p>
+                        <div style="background: #fff5f5; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em;">
+                            <strong>Result:</strong> -15% labor costs
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #43e97b;">
+                        <h4 style="color: #43e97b; margin-bottom: 10px;">🥪 New Lunch Menu</h4>
+                        <p style="font-size: 0.95em; color: #4a5568;">Special combos to boost midday sales</p>
+                        <div style="background: #e6fffa; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em;">
+                            <strong>Result:</strong> +28% lunch revenue
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #ffd93d;">
+                        <h4 style="color: #d69e2e; margin-bottom: 10px;">📱 Push Notifications</h4>
+                        <p style="font-size: 0.95em; color: #4a5568;">Alert customers about afternoon deals</p>
+                        <div style="background: #fef5e7; padding: 10px; border-radius: 5px; margin-top: 10px; font-size: 0.9em;">
+                            <strong>Result:</strong> +42% loyalty app usage
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metrics">
+                <div class="metric-card">
+                    <div class="label">Revenue Growth</div>
+                    <div class="value">+22%</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">in 2 months</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Customer Satisfaction</div>
+                    <div class="value">4.8★</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">from 4.2</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Afternoon Sales</div>
+                    <div class="value">+35%</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">problem solved!</div>
+                </div>
+                <div class="metric-card">
+                    <div class="label">Cost Savings</div>
+                    <div class="value">$2,400</div>
+                    <div style="font-size: 0.9em; opacity: 0.9;">per month</div>
+                </div>
+            </div>
+
+            <div class="comparison" style="margin-top: 30px;">
+                <div class="comparison-box before">
+                    <h4>😰 Before Data Analytics</h4>
+                    <div style="text-align: left; margin-top: 15px; line-height: 2;">
+                        ❌ Sales declining<br>
+                        ❌ Don't know why<br>
+                        ❌ Guessing solutions<br>
+                        ❌ Wasting resources<br>
+                        ❌ Staff frustration
+                    </div>
+                </div>
+                <div class="comparison-box after">
+                    <h4>🎉 After Data Analytics</h4>
+                    <div style="text-align: left; margin-top: 15px; line-height: 2;">
+                        ✅ Revenue +22%<br>
+                        ✅ Clear insights<br>
+                        ✅ Targeted actions<br>
+                        ✅ Optimized operations<br>
+                        ✅ Happy customers
+                    </div>
+                </div>
+            </div>
+
+            <div class="why-matters">
+                💡 <strong>Why It Matters:</strong> This is where data becomes dollars! All analysis is meaningless without action. Real business value happens at deployment.
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div style="background: white; border-radius: 20px; padding: 50px; margin-top: 40px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <h2 style="font-size: 2.5em; margin-bottom: 30px; color: #2d3748;">🎬 The Complete Journey</h2>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px;">
+                <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 15px;">Sarah's Transformation</div>
+                <div style="font-size: 3em; margin: 20px 0;">📉 → 📊 → 📈</div>
+                <div style="font-size: 1.2em;">Problem → Analysis → Growth</div>
+            </div>
+
+            <div style="text-align: left; max-width: 800px; margin: 0 auto;">
+                <h3 style="color: #2d3748; margin-bottom: 20px;">Key Takeaways</h3>
+                <div style="line-height: 2; color: #4a5568; font-size: 1.1em;">
+                    <strong style="color: #667eea;">1. Start with a clear problem</strong> - Don't collect data randomly<br>
+                    <strong style="color: #667eea;">2. Quality data matters</strong> - Clean data = accurate insights<br>
+                    <strong style="color: #667eea;">3. Analysis reveals truth</strong> - Patterns tell the real story<br>
+                    <strong style="color: #667eea;">4. Predictions enable planning</strong> - Prepare for tomorrow today<br>
+                    <strong style="color: #667eea;">5. Visualizations communicate</strong> - Make data understandable<br>
+                    <strong style="color: #667eea;">6. Action creates value</strong> - Insights without action = nothing<br>
+                    <strong style="color: #667eea;">7. Measure the impact</strong> - Track results and iterate
+                </div>
+            </div>
+
+            <div style="background: #fef5e7; padding: 25px; border-radius: 12px; margin-top: 30px; border-left: 5px solid #ffd93d;">
+                <p style="font-size: 1.2em; color: #2d3748; line-height: 1.8; margin: 0;">
+                    <strong>Every successful data project follows these 7 stages.</strong> Whether you're running a coffee shop, managing a corporation, or analyzing customer behavior - the process remains the same. <strong>Data transforms businesses!</strong> ☕→💰
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
