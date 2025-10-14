@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regular Expressions in Python - Training Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .objective {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 30px;
+            margin: 30px;
+            border-radius: 8px;
+        }
+
+        .objective h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .objective ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .objective li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .objective li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.6em;
+        }
+
+        .section h3 {
+            color: #4a5568;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block code {
+            color: #63b3ed;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr:hover {
+            background: #f7fafc;
+            transition: background 0.3s ease;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .example-box {
+            background: #edf2f7;
+            border-left: 4px solid #48bb78;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .example-box h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 5px;
+        }
+
+        .note {
+            background: #fff5e6;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐍 Regular Expressions in Python</h1>
+            <p>Comprehensive Training Guide for Freshers</p>
+        </div>
+
+        <div class="objective">
+            <h2>🎯 Training Objective</h2>
+            <p style="margin-bottom: 15px;">By the end of this session, students should:</p>
+            <ul>
+                <li>Understand what Regular Expressions (regex) are</li>
+                <li>Know how to use regex in Python (<code>re</code> module)</li>
+                <li>Write and test regex patterns to extract, validate, and manipulate text</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <!-- Section 1 -->
+            <div class="section">
+                <h2>1️⃣ Introduction to Regular Expressions</h2>
+                
+                <h3>Concepts:</h3>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>What are Regular Expressions?</strong> - Patterns used to match character combinations in strings</li>
+                    <li><strong>Why we use them</strong> - Efficient text searching, validation, and manipulation</li>
+                    <li><strong>Where regex is used</strong> - Data cleaning, form validation, web scraping, log parsing, etc.</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <div class="code-block">
+# Simple example: check if 'apple' exists in a string
+import re
+text = "I like apples and bananas"
+if re.search("apple", text):
+    print("Found 'apple'")
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="section">
+                <h2>2️⃣ The <code>re</code> Module in Python</h2>
+                
+                <h3>Key Functions:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Function</th>
+                            <th>Description</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>re.search()</code></td>
+                            <td>Finds first occurrence</td>
+                            <td><code>re.search('a', 'banana')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.match()</code></td>
+                            <td>Checks only at the beginning</td>
+                            <td><code>re.match('ban', 'banana')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.findall()</code></td>
+                            <td>Returns all matches as a list</td>
+                            <td><code>re.findall('a', 'banana')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.split()</code></td>
+                            <td>Splits string by pattern</td>
+                            <td><code>re.split('\s', 'I like apples')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.sub()</code></td>
+                            <td>Substitutes pattern with text</td>
+                            <td><code>re.sub('apple', 'mango', 'apple pie')</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="section">
+                <h2>3️⃣ Basic Regex Patterns and Metacharacters</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>.</code></td>
+                            <td>Any single character</td>
+                            <td><code>re.findall("a.", "cat bat mat")</code></td>
+                            <td>['at', 'at', 'at']</td>
+                        </tr>
+                        <tr>
+                            <td><code>^</code></td>
+                            <td>Start of string</td>
+                            <td><code>re.findall("^Hi", "Hi there")</code></td>
+                            <td>['Hi']</td>
+                        </tr>
+                        <tr>
+                            <td><code>$</code></td>
+                            <td>End of string</td>
+                            <td><code>re.findall("bye$", "goodbye")</code></td>
+                            <td>['bye']</td>
+                        </tr>
+                        <tr>
+                            <td><code>*</code></td>
+                            <td>0 or more occurrences</td>
+                            <td><code>re.findall("go*d", "gd good goood")</code></td>
+                            <td>['gd', 'good', 'goood']</td>
+                        </tr>
+                        <tr>
+                            <td><code>+</code></td>
+                            <td>1 or more occurrences</td>
+                            <td><code>re.findall("go+d", "gd good goood")</code></td>
+                            <td>['good', 'goood']</td>
+                        </tr>
+                        <tr>
+                            <td><code>?</code></td>
+                            <td>0 or 1 occurrence</td>
+                            <td><code>re.findall("go?d", "gd good")</code></td>
+                            <td>['gd']</td>
+                        </tr>
+                        <tr>
+                            <td><code>{n}</code></td>
+                            <td>Exactly n times</td>
+                            <td><code>re.findall("a{2}", "aa aaaa a")</code></td>
+                            <td>['aa', 'aa']</td>
+                        </tr>
+                        <tr>
+                            <td><code>{n,m}</code></td>
+                            <td>Between n and m times</td>
+                            <td><code>re.findall("a{2,3}", "aaaa")</code></td>
+                            <td>['aaa']</td>
+                        </tr>
+                        <tr>
+                            <td><code>[]</code></td>
+                            <td>Character set</td>
+                            <td><code>re.findall("[aeiou]", "hello")</code></td>
+                            <td>['e', 'o']</td>
+                        </tr>
+                        <tr>
+                            <td><code>[^]</code></td>
+                            <td>Negation</td>
+                            <td><code>re.findall("[^aeiou]", "hello")</code></td>
+                            <td>['h', 'l', 'l']</td>
+                        </tr>
+                        <tr>
+                            <td><code>|</code></td>
+                            <td>OR condition</td>
+                            <td><code>re.findall("cat|dog", "I have a cat")</code></td>
+                            <td>['cat']</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="section">
+                <h2>4️⃣ Character Classes / Shorthand</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>\d</code></td>
+                            <td>Digit</td>
+                            <td><code>re.findall("\d", "A1B2")</code></td>
+                            <td>['1', '2']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\D</code></td>
+                            <td>Non-digit</td>
+                            <td><code>re.findall("\D", "A1B2")</code></td>
+                            <td>['A', 'B']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\w</code></td>
+                            <td>Word character (A-Z, a-z, 0-9, _)</td>
+                            <td><code>re.findall("\w", "Hi_123")</code></td>
+                            <td>['H','i','_','1','2','3']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\W</code></td>
+                            <td>Non-word</td>
+                            <td><code>re.findall("\W", "Hi_123@!")</code></td>
+                            <td>['@', '!']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\s</code></td>
+                            <td>Whitespace</td>
+                            <td><code>re.findall("\s", "Hi there")</code></td>
+                            <td>[' ']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\S</code></td>
+                            <td>Non-whitespace</td>
+                            <td><code>re.findall("\S", "Hi there")</code></td>
+                            <td>['H','i','t','h','e','r','e']</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="section">
+                <h2>5️⃣ Grouping and Capturing</h2>
+                
+                <p><strong>Concept:</strong> Use parentheses <code>()</code> to group parts of a pattern.</p>
+                
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <div class="code-block">
+text = "Name: Aman, Age: 30"
+result = re.findall(r"Name: (\w+), Age: (\d+)", text)
+print(result)  # [('Aman', '30')]
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>Use Case:</strong> Extract multiple fields like name, date, or price from structured text.
+                </div>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="section">
+                <h2>6️⃣ Anchors and Boundaries</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pattern</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                            <th>Output</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>\b</code></td>
+                            <td>Word boundary</td>
+                            <td><code>re.findall(r"\bcat\b", "cat scatter catalog")</code></td>
+                            <td>['cat']</td>
+                        </tr>
+                        <tr>
+                            <td><code>\B</code></td>
+                            <td>Non-word boundary</td>
+                            <td><code>re.findall(r"\Bcat\B", "educate")</code></td>
+                            <td>['cat']</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 7 -->
+            <div class="section">
+                <h2>7️⃣ Flags / Modifiers</h2>
+                
+                <p>Used inside <code>re</code> functions to change matching behavior.</p>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Flag</th>
+                            <th>Meaning</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>re.IGNORECASE</code> (<code>re.I</code>)</td>
+                            <td>Case insensitive</td>
+                            <td><code>re.findall('python', 'PYTHON', re.I)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.MULTILINE</code> (<code>re.M</code>)</td>
+                            <td>Makes <code>^</code> and <code>$</code> match each line</td>
+                            <td><code>re.findall('^Hello', text, re.M)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>re.DOTALL</code> (<code>re.S</code>)</td>
+                            <td>Makes <code>.</code> match newline too</td>
+                            <td><code>re.search('a.b', 'a\nb', re.S)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 8 -->
+            <div class="section">
+                <h2>8️⃣ Practical Examples</h2>
+                
+                <div class="example-box">
+                    <h4>✅ Validate Email:</h4>
+                    <div class="code-block">
+email = "user@example.com"
+pattern = r"^[a-zA-Z0-9._]+@[a-zA-Z]+\.[a-z]{2,3}$"
+print(bool(re.match(pattern, email)))  # True
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>✅ Extract All Phone Numbers:</h4>
+                    <div class="code-block">
+text = "Call me at 9876543210 or 9123456789"
+print(re.findall(r"\b\d{10}\b", text))
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>✅ Remove Special Characters:</h4>
+                    <div class="code-block">
+text = "Hello@# World!!"
+clean_text = re.sub(r"[^a-zA-Z0-9 ]", "", text)
+print(clean_text)  # Hello World
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>✅ Split by Multiple Delimiters:</h4>
+                    <div class="code-block">
+text = "apple,banana;grape|mango"
+print(re.split(r"[;|,]", text))
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 Python Regular Expressions Training | Designed for Corporate Learning</p>
+        </div>
+    </div>
+</body>
+</html>
