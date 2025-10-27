@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium with Python - Complete Tutorial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        nav {
+            background: #2c3e50;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: #34495e;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 50px;
+            scroll-margin-top: 60px;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .diagram {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .flow-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .flow-box {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .flow-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #764ba2;
+        }
+        
+        .code-block {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .keyword { color: #c678dd; }
+        .string { color: #98c379; }
+        .comment { color: #5c6370; font-style: italic; }
+        .function { color: #61afef; }
+        
+        .example-box {
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .use-case {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .use-case:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .project-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .project-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.2);
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .tip-box strong {
+            color: #856404;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .architecture-diagram {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .layer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Selenium with Python</h1>
+            <p>Complete Guide to Web Automation & Testing</p>
+        </header>
+        
+        <nav>
+            <ul>
+                <li><a href="#intro">Introduction</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#basics">Basics</a></li>
+                <li><a href="#locators">Locators</a></li>
+                <li><a href="#interactions">Interactions</a></li>
+                <li><a href="#advanced">Advanced</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </nav>
+        
+        <div class="content">
+            <section id="intro">
+                <h2>📚 What is Selenium?</h2>
+                <p>Selenium is a powerful open-source automation framework used to automate web browsers. It allows you to programmatically control browsers to perform tasks like testing web applications, web scraping, automating repetitive tasks, and more.</p>
+                
+                <h3>Why Learn Selenium?</h3>
+                <div class="use-case">
+                    <h4>🧪 Automated Testing</h4>
+                    <p>Test web applications automatically without manual intervention. Run regression tests, functional tests, and integration tests.</p>
+                </div>
+                
+                <div class="use-case">
+                    <h4>🔄 Web Scraping</h4>
+                    <p>Extract data from dynamic websites that load content using JavaScript.</p>
+                </div>
+                
+                <div class="use-case">
+                    <h4>⚡ Task Automation</h4>
+                    <p>Automate repetitive browser tasks like form filling, downloading files, taking screenshots, and more.</p>
+                </div>
+                
+                <div class="use-case">
+                    <h4>📊 Data Collection</h4>
+                    <p>Gather data from multiple sources for analysis, monitoring prices, tracking changes, etc.</p>
+                </div>
+                
+                <div class="diagram">
+                    <h3>Selenium Architecture</h3>
+                    <div class="architecture-diagram">
+                        <div class="layer">
+                            <h4>Your Python Script</h4>
+                            <p>Write automation code</p>
+                        </div>
+                        <div class="layer">
+                            <h4>Selenium WebDriver</h4>
+                            <p>Python binding library</p>
+                        </div>
+                        <div class="layer">
+                            <h4>Browser Driver</h4>
+                            <p>ChromeDriver, GeckoDriver</p>
+                        </div>
+                        <div class="layer">
+                            <h4>Web Browser</h4>
+                            <p>Chrome, Firefox, Edge</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="installation">
+                <h2>⚙️ Installation & Setup</h2>
+                
+                <h3>Step 1: Install Selenium</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Install Selenium using pip</span>
+pip install selenium</code>
+                </div>
+                
+                <h3>Step 2: Install WebDriver</h3>
+                <p>You need a browser driver (ChromeDriver for Chrome, GeckoDriver for Firefox, etc.)</p>
+                
+                <div class="code-block">
+                    <code><span class="comment"># Option 1: Install webdriver-manager (Recommended - Auto-manages drivers)</span>
+pip install webdriver-manager
+
+<span class="comment"># Option 2: Download manually from:</span>
+<span class="comment"># Chrome: https://chromedriver.chromium.org/</span>
+<span class="comment"># Firefox: https://github.com/mozilla/geckodriver/releases</span></code>
+                </div>
+                
+                <h3>Step 3: First Selenium Script</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver
+<span class="keyword">from</span> selenium.webdriver.chrome.service <span class="keyword">import</span> Service
+<span class="keyword">from</span> webdriver_manager.chrome <span class="keyword">import</span> ChromeDriverManager
+
+<span class="comment"># Setup Chrome driver automatically</span>
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+<span class="comment"># Open a website</span>
+driver.get(<span class="string">"https://www.python.org"</span>)
+
+<span class="comment"># Print the title</span>
+<span class="function">print</span>(driver.title)
+
+<span class="comment"># Close the browser</span>
+driver.quit()</code>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Tip:</strong> Always use <code>driver.quit()</code> to close the browser and end the session properly. Use <code>driver.close()</code> to close only the current tab.
+                </div>
+            </section>
+            
+            <section id="basics">
+                <h2>🎯 Selenium Basics</h2>
+                
+                <h3>Browser Navigation</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver
+
+driver = webdriver.Chrome()
+
+<span class="comment"># Navigate to a URL</span>
+driver.get(<span class="string">"https://www.example.com"</span>)
+
+<span class="comment"># Navigate forward and backward</span>
+driver.back()
+driver.forward()
+
+<span class="comment"># Refresh the page</span>
+driver.refresh()
+
+<span class="comment"># Get current URL</span>
+current_url = driver.current_url
+<span class="function">print</span>(current_url)
+
+<span class="comment"># Get page title</span>
+title = driver.title
+<span class="function">print</span>(title)
+
+<span class="comment"># Get page source</span>
+page_source = driver.page_source
+
+driver.quit()</code>
+                </div>
+                
+                <h3>Browser Window Management</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Maximize window</span>
+driver.maximize_window()
+
+<span class="comment"># Set window size</span>
+driver.set_window_size(1024, 768)
+
+<span class="comment"># Get window size</span>
+size = driver.get_window_size()
+<span class="function">print</span>(<span class="string">f"Width: {size['width']}, Height: {size['height']}"</span>)
+
+<span class="comment"># Take screenshot</span>
+driver.save_screenshot(<span class="string">"screenshot.png"</span>)</code>
+                </div>
+            </section>
+            
+            <section id="locators">
+                <h2>🔍 Element Locators</h2>
+                <p>Locators are used to find elements on a web page. Selenium provides multiple strategies to locate elements.</p>
+                
+                <div class="diagram">
+                    <h3>8 Types of Locators</h3>
+                    <table>
+                        <tr>
+                            <th>Locator Strategy</th>
+                            <th>Method</th>
+                            <th>Example</th>
+                        </tr>
+                        <tr>
+                            <td>ID</td>
+                            <td>find_element(By.ID, "id")</td>
+                            <td>Most preferred, unique</td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>find_element(By.NAME, "name")</td>
+                            <td>Good for form elements</td>
+                        </tr>
+                        <tr>
+                            <td>Class Name</td>
+                            <td>find_element(By.CLASS_NAME, "class")</td>
+                            <td>Can match multiple elements</td>
+                        </tr>
+                        <tr>
+                            <td>Tag Name</td>
+                            <td>find_element(By.TAG_NAME, "tag")</td>
+                            <td>Find by HTML tag</td>
+                        </tr>
+                        <tr>
+                            <td>Link Text</td>
+                            <td>find_element(By.LINK_TEXT, "text")</td>
+                            <td>Exact text in link</td>
+                        </tr>
+                        <tr>
+                            <td>Partial Link Text</td>
+                            <td>find_element(By.PARTIAL_LINK_TEXT, "text")</td>
+                            <td>Partial text in link</td>
+                        </tr>
+                        <tr>
+                            <td>CSS Selector</td>
+                            <td>find_element(By.CSS_SELECTOR, "selector")</td>
+                            <td>Powerful and flexible</td>
+                        </tr>
+                        <tr>
+                            <td>XPath</td>
+                            <td>find_element(By.XPATH, "xpath")</td>
+                            <td>Most powerful, any element</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <h3>Locator Examples</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver
+<span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By
+
+driver = webdriver.Chrome()
+driver.get(<span class="string">"https://www.example.com"</span>)
+
+<span class="comment"># Find by ID</span>
+element = driver.find_element(By.ID, <span class="string">"username"</span>)
+
+<span class="comment"># Find by Name</span>
+element = driver.find_element(By.NAME, <span class="string">"email"</span>)
+
+<span class="comment"># Find by Class Name</span>
+element = driver.find_element(By.CLASS_NAME, <span class="string">"btn-primary"</span>)
+
+<span class="comment"># Find by Tag Name</span>
+element = driver.find_element(By.TAG_NAME, <span class="string">"h1"</span>)
+
+<span class="comment"># Find by Link Text</span>
+element = driver.find_element(By.LINK_TEXT, <span class="string">"Click Here"</span>)
+
+<span class="comment"># Find by Partial Link Text</span>
+element = driver.find_element(By.PARTIAL_LINK_TEXT, <span class="string">"Click"</span>)
+
+<span class="comment"># Find by CSS Selector</span>
+element = driver.find_element(By.CSS_SELECTOR, <span class="string">"div.content > p#intro"</span>)
+
+<span class="comment"># Find by XPath</span>
+element = driver.find_element(By.XPATH, <span class="string">"//input[@type='submit']"</span>)
+
+<span class="comment"># Find multiple elements</span>
+elements = driver.find_elements(By.CLASS_NAME, <span class="string">"item"</span>)
+<span class="keyword">for</span> elem <span class="keyword">in</span> elements:
+    <span class="function">print</span>(elem.text)</code>
+                </div>
+                
+                <h3>CSS Selector vs XPath</h3>
+                <div class="example-box">
+                    <h4>CSS Selector (Faster, simpler syntax)</h4>
+                    <ul>
+                        <li><code>#id</code> - Select by ID</li>
+                        <li><code>.class</code> - Select by class</li>
+                        <li><code>tag.class</code> - Tag with class</li>
+                        <li><code>parent > child</code> - Direct child</li>
+                        <li><code>[attribute='value']</code> - By attribute</li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>XPath (More powerful, can traverse up the DOM)</h4>
+                    <ul>
+                        <li><code>//tag[@id='value']</code> - By ID</li>
+                        <li><code>//tag[@class='value']</code> - By class</li>
+                        <li><code>//tag[text()='value']</code> - By text</li>
+                        <li><code>//parent/child</code> - Direct child</li>
+                        <li><code>//tag[contains(@class, 'partial')]</code> - Partial match</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="interactions">
+                <h2>🖱️ Web Element Interactions</h2>
+                
+                <h3>Basic Interactions</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver
+<span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By
+<span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys
+
+driver = webdriver.Chrome()
+driver.get(<span class="string">"https://www.example.com"</span>)
+
+<span class="comment"># Click an element</span>
+button = driver.find_element(By.ID, <span class="string">"submit-btn"</span>)
+button.click()
+
+<span class="comment"># Type text into input field</span>
+input_field = driver.find_element(By.NAME, <span class="string">"search"</span>)
+input_field.send_keys(<span class="string">"Selenium Python"</span>)
+
+<span class="comment"># Clear text from input</span>
+input_field.clear()
+
+<span class="comment"># Submit a form</span>
+input_field.submit()
+
+<span class="comment"># Press Enter key</span>
+input_field.send_keys(Keys.RETURN)
+
+<span class="comment"># Get element text</span>
+text = button.text
+<span class="function">print</span>(text)
+
+<span class="comment"># Get attribute value</span>
+href = button.get_attribute(<span class="string">"href"</span>)
+
+<span class="comment"># Check if element is displayed</span>
+<span class="keyword">if</span> button.is_displayed():
+    <span class="function">print</span>(<span class="string">"Button is visible"</span>)
+
+<span class="comment"># Check if element is enabled</span>
+<span class="keyword">if</span> button.is_enabled():
+    <span class="function">print</span>(<span class="string">"Button is clickable"</span>)
+
+<span class="comment"># Check if checkbox is selected</span>
+checkbox = driver.find_element(By.ID, <span class="string">"agree"</span>)
+<span class="keyword">if</span> checkbox.is_selected():
+    <span class="function">print</span>(<span class="string">"Checkbox is checked"</span>)</code>
+                </div>
+                
+                <h3>Dropdown/Select Elements</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> Select
+
+<span class="comment"># Find dropdown element</span>
+dropdown = Select(driver.find_element(By.ID, <span class="string">"country"</span>))
+
+<span class="comment"># Select by visible text</span>
+dropdown.select_by_visible_text(<span class="string">"United States"</span>)
+
+<span class="comment"># Select by value attribute</span>
+dropdown.select_by_value(<span class="string">"us"</span>)
+
+<span class="comment"># Select by index</span>
+dropdown.select_by_index(1)
+
+<span class="comment"># Get all options</span>
+options = dropdown.options
+<span class="keyword">for</span> option <span class="keyword">in</span> options:
+    <span class="function">print</span>(option.text)
+
+<span class="comment"># Deselect (for multi-select dropdowns)</span>
+dropdown.deselect_all()</code>
+                </div>
+                
+                <h3>Handling Alerts</h3>
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium.webdriver.common.alert <span class="keyword">import</span> Alert
+
+<span class="comment"># Click button that triggers alert</span>
+driver.find_element(By.ID, <span class="string">"alert-btn"</span>).click()
+
+<span class="comment"># Switch to alert</span>
+alert = Alert(driver)
+
+<span class="comment"># Get alert text</span>
+<span class="function">print</span>(alert.text)
+
+<span class="comment"># Accept alert (click OK)</span>
+alert.accept()
+
+<span class="comment"># Dismiss alert (click Cancel)</span>
+<span class="comment"># alert.dismiss()</span>
+
+<span class="comment"># Send text to prompt alert</span>
+<span class="comment"># alert.send_keys("Your text here")</span></code>
+                </div>
+            </section>
+            
+            <section id="advanced">
+                <h2>🚀 Advanced Selenium Features</h2>
+                
+                <h3>Waits (Very Important!)</h3>
+                <p>Waits help handle dynamic content that loads after the page initially loads.</p>
+                
+                <div class="code-block">
+                    <code><span class="keyword">from</span> selenium.webdriver.support.ui <span class="keyword">import</span> WebDriverWait
+<span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC
+<span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By
+<span class="keyword">import</span> time
+
+<span class="comment"># Implicit Wait (applies to all find operations)</span>
+driver.implicitly_wait(10)  <span class="comment"># Wait up to 10 seconds</span>
+
+<span class="comment"># Explicit Wait (wait for specific condition)</span>
+wait = WebDriverWait(driver, 10)
+element = wait.until(
+    EC.presence_of_element_located((By.ID, <span class="string">"myElement"</span>))
+)
+
+<span class="comment"># Common Expected Conditions:</span>
+<span class="comment"># - element_to_be_clickable</span>
+<span class="comment"># - presence_of_element_located</span>
+<span class="comment"># - visibility_of_element_located</span>
+<span class="comment"># - text_to_be_present_in_element</span>
+
+<span class="comment"># Example: Wait for element to be clickable</span>
+button = wait.until(
+    EC.element_to_be_clickable((By.ID, <span class="string">"submit"</span>))
+)
+button.click()
+
+<span class="comment"># Hard Wait (Not recommended, use only when necessary)</span>
+time.sleep(5)  <span class="comment"># Wait 5 seconds</span></code>
+                </div>
+                
+                <h3>Switching Between Windows/Tabs</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Get current window handle</span>
+main_window = driver.current_window_handle
+
+<span class="comment"># Click link that opens new tab</span>
+driver.find_element(By.LINK_TEXT, <span class="string">"Open in New Tab"</span>).click()
+
+<span class="comment"># Get all window handles</span>
+all_windows = driver.window_handles
+
+<span class="comment"># Switch to new window</span>
+<span class="keyword">for</span> window <span class="keyword">in</span> all_windows:
+    <span class="keyword">if</span> window != main_window:
+        driver.switch_to.window(window)
+        <span class="keyword">break</span>
+
+<span class="comment"># Do something in new window</span>
+<span class="function">print</span>(driver.title)
+
+<span class="comment"># Close current window</span>
+driver.close()
+
+<span class="comment"># Switch back to main window</span>
+driver.switch_to.window(main_window)</code>
+                </div>
+                
+                <h3>Handling Frames/iFrames</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Switch to frame by index</span>
+driver.switch_to.frame(0)
+
+<span class="comment"># Switch to frame by name or ID</span>
+driver.switch_to.frame(<span class="string">"frameName"</span>)
+
+<span class="comment"># Switch to frame by WebElement</span>
+iframe = driver.find_element(By.TAG_NAME, <span class="string">"iframe"</span>)
+driver.switch_to.frame(iframe)
+
+<span class="comment"># Switch back to main content</span>
+driver.switch_to.default_content()
+
+<span class="comment"># Switch to parent frame</span>
+driver.switch_to.parent_frame()</code>
+                </div>
+                
+                <h3>JavaScript Execution</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Execute JavaScript</span>
+driver.execute_script(<span class="string">"alert('Hello from Selenium!');"</span>)
+
+<span class="comment"># Scroll to bottom of page</span>
+driver.execute_script(<span class="string">"window.scrollTo(0, document.body.scrollHeight);"</span>)
+
+<span class="comment"># Scroll to specific element</span>
+element = driver.find_element(By.ID, <span class="string">"myElement"</span>)
+driver.execute_script(<span class="string">"arguments[0].scrollIntoView();"</span>, element)
+
+<span class="comment"># Click using JavaScript (when normal click doesn't work)</span>
+driver.execute_script(<span class="string">"arguments[0].click();"</span>, element)
+
+<span class="comment"># Get return value from JavaScript</span>
+title = driver.execute_script(<span class="string">"return document.title;"</span>)
+<span class="function">print</span>(title)</code>
+                </div>
+                
+                <h3>Taking Screenshots</h3>
+                <div class="code-block">
+                    <code><span class="comment"># Full page screenshot</span>
+driver.save_screenshot(<span class="string">"page.png"</span>)
+
+<span class="comment"># Screenshot of specific element</span>
+element = driver.find_element(By.ID, <span class="string"
